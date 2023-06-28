@@ -1,18 +1,27 @@
 /* eslint-disable no-console */
 
-import express, { Application, Response, Request } from 'express'
-import cors from 'cors'
+import { Response, Request } from 'express'
+
+import mongoose from 'mongoose'
+import { UserController } from './app/module/user/user.controller'
+import app from './app'
 
 const port = process.env.PORT || 5000
-const app: Application = express()
 
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.get('/', (req, res: Response) => {
+const dbConnection = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URL as string)
+    console.log('Database Connect')
+  } catch (err) {
+    console.log(err)
+  }
+}
+app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to my Digital Cow Server')
 })
+app.post('/create-user', UserController.createUSer)
 
-app.listen(5000, () => {
+app.listen(port, () => {
+  dbConnection()
   console.log(`app running on ${port}`)
 })
