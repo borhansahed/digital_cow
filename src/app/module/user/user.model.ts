@@ -8,6 +8,10 @@ const userSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
       enum: ['buyer', 'seller'],
@@ -16,6 +20,25 @@ const userSchema = new Schema<IUser>(
     name: {
       type: String,
       required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+
+    address: {
+      type: String,
+      required: true,
+    },
+    budget: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    income: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
   {
