@@ -63,7 +63,7 @@ const updateOneUser: RequestHandler = async (req, res, next) => {
     const result = await UserService.updateOneUser(req.params.id, updatedData)
     res.status(httpStatus.OK).json({
       success: true,
-      message: 'User Delete successfully',
+      message: 'User Updated successfully',
       data: result,
     })
   } catch (err) {

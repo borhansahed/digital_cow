@@ -11,6 +11,10 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.get('/', (req, res) => {
+  res.send('Welcome to my Digital Cow Server')
+})
+
 app.use('/api/v1', digitalCowsRoutes)
 
 app.use('*', (req, res) => {

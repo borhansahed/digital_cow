@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 
-import { Response, Request } from 'express'
-
 import mongoose from 'mongoose'
 
 import app from './app'
@@ -16,10 +14,6 @@ const dbConnection = async () => {
     console.log(err)
   }
 }
-app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to my Digital Cow Server')
-})
-
 app.listen(port, () => {
   dbConnection()
   console.log(`app running on ${port}`)
