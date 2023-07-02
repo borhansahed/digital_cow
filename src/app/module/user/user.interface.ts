@@ -4,7 +4,6 @@ type IName = {
 }
 
 export type IUser = {
-  id: string
   password: string
   role: 'buyer' | 'seller'
   name: IName

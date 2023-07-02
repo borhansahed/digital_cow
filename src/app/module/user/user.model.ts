@@ -3,11 +3,6 @@ import { IUser } from './user.interface'
 
 const userSchema = new Schema<IUser>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     password: {
       type: String,
       required: true,
@@ -18,7 +13,14 @@ const userSchema = new Schema<IUser>(
       required: true,
     },
     name: {
-      type: String,
+      type: {
+        firstName: {
+          type: String,
+        },
+        lastName: {
+          type: String,
+        },
+      },
       required: true,
     },
     phoneNumber: {
@@ -43,9 +45,6 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
   }
 )
 

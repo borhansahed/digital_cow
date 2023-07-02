@@ -3,7 +3,7 @@
 import { Response, Request } from 'express'
 
 import mongoose from 'mongoose'
-import { UserController } from './app/module/user/user.controller'
+
 import app from './app'
 
 const port = process.env.PORT || 5000
@@ -19,7 +19,6 @@ const dbConnection = async () => {
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to my Digital Cow Server')
 })
-app.post('/create-user', UserController.createUSer)
 
 app.listen(port, () => {
   dbConnection()

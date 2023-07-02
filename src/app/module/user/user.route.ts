@@ -3,8 +3,8 @@ import { UserController } from './user.controller'
 
 const route = express.Router()
 
-route.get('/', (req, res) => {
-  res.send('Hello I am a User')
-})
-route.post('/create-user', UserController.createUSer)
+route.get('/', UserController.getAllUser)
+route.post('/create-user', UserController.createUser)
+route.get('/:id', UserController.getOneUser)
+route.delete('/:id', UserController.deleteOneUser)
 export const UserRoute = route
