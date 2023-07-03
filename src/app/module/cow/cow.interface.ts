@@ -11,3 +11,20 @@ export type ICow = {
   category: string
   seller: Schema.Types.ObjectId
 }
+
+export type IPagination = {
+  page: number
+  limit: number
+  skip: number
+  sortBy: string
+  sortOrder: 'asc' | 'desc'
+}
+
+export type IGenericResponse<T> = {
+  meta: {
+    page: number
+    limit: number
+    total: number
+  }
+  data: T
+}

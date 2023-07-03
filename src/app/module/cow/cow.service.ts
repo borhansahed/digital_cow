@@ -1,16 +1,38 @@
-import { ICow } from './cow.interface'
+import { SortOrder } from 'mongoose'
+import { ICow, IGenericResponse, IPagination } from './cow.interface'
 import CowModel from './cow.model'
 
 const addNewCow = async (payload: ICow): Promise<ICow | null> => {
   const result = await CowModel.create(payload)
   return result
 }
-const getAllCow = async (): Promise<ICow[] | null> => {
+const getAllCow = async (
+  pagination: IPagination
+): Promise<IGenericResponse<ICow[]> | null> => {
+  const { page, limit, skip, sortBy, sortOrder } = pagination
+
+  const sortCondition: { [key: string]: SortOrder } = {}
+
+  if (sortBy && sortOrder) {
+    sortCondition[sortBy] = sortOrder
+  }
   const result = await CowModel.find()
-  return result
+    .sort(sortCondition)
+    .skip(skip)
+    .limit(limit)
+
+  const total = await CowModel.countDocuments({})
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  }
 }
 const getOneCow = async (id: string): Promise<ICow | null> => {
-  const result = await CowModel.findById(id)
+  const result = await CowModel.findOne({ _id: id }).populate('seller')
   return result
 }
 const deleteOneCow = async (id: string): Promise<ICow | null> => {

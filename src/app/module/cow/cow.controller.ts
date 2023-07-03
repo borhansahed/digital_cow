@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import { CowService } from './cow.service'
 import httpStatus from 'http-status'
+import { paginationHelper } from '../../../helper/pagination'
 
 const addNewCow: RequestHandler = async (req, res, next) => {
   try {
@@ -18,11 +19,14 @@ const addNewCow: RequestHandler = async (req, res, next) => {
 }
 const getAllCow: RequestHandler = async (req, res, next) => {
   try {
-    const result = await CowService.getAllCow()
+    const pagination = paginationHelper(req.query)
+
+    const result = await CowService.getAllCow(pagination)
     res.status(httpStatus.OK).json({
       success: true,
       message: ' Cows  retrieved successfully',
-      data: result,
+      meta: result?.meta,
+      data: result?.data,
     })
   } catch (err) {
     next(err)
