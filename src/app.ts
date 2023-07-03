@@ -2,7 +2,7 @@ import express, { Application } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import digitalCowsRoutes from './app/routes'
-import globalErrorHandler from './middleware/globalError'
+import globalErrorHandler from './app/middleware/globalError'
 import httpStatus from 'http-status'
 
 const app: Application = express()

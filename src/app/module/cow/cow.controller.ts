@@ -2,6 +2,8 @@ import { RequestHandler } from 'express'
 import { CowService } from './cow.service'
 import httpStatus from 'http-status'
 import { paginationHelper } from '../../../helper/pagination'
+import { filtersKey } from './cow.constraint'
+import pick from '../../../shared/pick'
 
 const addNewCow: RequestHandler = async (req, res, next) => {
   try {
@@ -19,9 +21,10 @@ const addNewCow: RequestHandler = async (req, res, next) => {
 }
 const getAllCow: RequestHandler = async (req, res, next) => {
   try {
-    const pagination = paginationHelper(req.query)
+    const filters = pick(req.query, filtersKey)
 
-    const result = await CowService.getAllCow(pagination)
+    const pagination = paginationHelper(req.query)
+    const result = await CowService.getAllCow(filters, pagination)
     res.status(httpStatus.OK).json({
       success: true,
       message: ' Cows  retrieved successfully',

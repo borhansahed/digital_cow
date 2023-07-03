@@ -20,3 +20,14 @@ export const cowLocation: string[] = [
 ]
 
 export const cowCategory: string[] = ['Dairy', 'Beef', 'DualPurpose']
+
+export const searchAbleFields = ['location', 'breed', 'category']
+
+export const filtersKey: string[] = [
+  'searchTerm',
+  'location',
+  'breed',
+  'category',
+  'minPrice',
+  'maxPrice',
+]

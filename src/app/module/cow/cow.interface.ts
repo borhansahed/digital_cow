@@ -20,6 +20,15 @@ export type IPagination = {
   sortOrder: 'asc' | 'desc'
 }
 
+export type IFilter = {
+  searchTerm?: number
+  minPrice?: number
+  maxPrice?: number
+  location?: string
+  breed?: string
+  category?: string
+}
+
 export type IGenericResponse<T> = {
   meta: {
     page: number

@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { ErrorRequestHandler } from 'express'
-import { IErrorMessage } from '../interface/common'
-import { handleValidationError } from '../error/handleValidationError'
+import { IErrorMessage } from '../../interface/common'
+import { handleValidationError } from '../../error/handleValidationError'
 import httpStatus from 'http-status'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
