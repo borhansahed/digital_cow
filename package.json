@@ -5,6 +5,9 @@
   "repository": "https://github.com/Programming-Hero-Web-Course4/l2a3-cow-hut-backend-assignment-borhansahed.git",
   "author": "Mohammad Borhan Uddin",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build":"tsc -p",
