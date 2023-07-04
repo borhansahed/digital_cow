@@ -12,7 +12,7 @@ Join Digital Cow Backend today and be a part of the future of cattle trading. Un
 
 ## Main Link
 
-https://digital-cow.onrender.com/api/v1
+https://digital-cow.onrender.com
 
 ## Users
 
