@@ -40,6 +40,7 @@ const getOneCow: RequestHandler = async (req, res, next) => {
     const { id } = req.params
 
     const result = await CowService.getOneCow(id)
+
     res.status(httpStatus.OK).json({
       success: true,
       message: ' Cow retrieved successfully',
