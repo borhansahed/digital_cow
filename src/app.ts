@@ -4,10 +4,12 @@ import dotenv from 'dotenv'
 import digitalCowsRoutes from './app/routes'
 import globalErrorHandler from './app/middleware/globalError'
 import httpStatus from 'http-status'
+import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 dotenv.config()
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

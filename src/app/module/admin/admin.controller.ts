@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import { AdminService } from './admin.service'
 import httpStatus from 'http-status'
+import config from '../../../config'
 
 const createAdmin: RequestHandler = async (req, res, next) => {
   try {
@@ -28,9 +29,32 @@ const adminLogin: RequestHandler = async (req, res, next) => {
     const { ...loginData } = req.body
     const result = await AdminService.adminLogin(loginData)
 
-    res.status(200).json({
+    const { refreshToken, accessToken } = result
+    const cookieOptions = {
+      secure: config.node_env === 'production',
+      httpOnly: true,
+    }
+
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+    res.status(httpStatus.OK).json({
       success: true,
-      message: 'Token created successfully',
+      message: 'User logged in successfully',
+      data: accessToken,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+// generate new access token with the help of refresh token
+const generateWithRefreshToken: RequestHandler = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.cookies
+    const result = await AdminService.generateWithRefreshToken(refreshToken)
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'New accessToken successfully created',
       data: result,
     })
   } catch (err) {
@@ -41,4 +65,5 @@ const adminLogin: RequestHandler = async (req, res, next) => {
 export const AdminController = {
   createAdmin,
   adminLogin,
+  generateWithRefreshToken,
 }
