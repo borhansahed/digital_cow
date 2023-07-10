@@ -3,12 +3,10 @@ type IName = {
   lastName: string
 }
 
-export type IUser = {
+export type IAdmin = {
   password: string
-  role: 'buyer' | 'seller' | 'admin'
+  role: 'admin'
   name: IName
   phoneNumber: string
   address: string
-  budget?: number
-  income?: number
 }
