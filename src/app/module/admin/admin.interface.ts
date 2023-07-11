@@ -13,8 +13,3 @@ export type IAdmin = {
   phoneNumber: string
   address: string
 }
-
-export type ILogin = {
-  phoneNumber: string
-  password: string
-}

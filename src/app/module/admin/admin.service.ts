@@ -2,8 +2,9 @@ import { JwtPayload, Secret } from 'jsonwebtoken'
 import config from '../../../config'
 import { BcryptHelper } from '../../../helper/bcryptHelper'
 import { JwtHelper } from '../../../helper/jwtHelper'
-import { IAdmin, ILogin } from './admin.interface'
+import { IAdmin } from './admin.interface'
 import AdminModel from './admin.model'
+import { ILogin } from '../../../interface/common'
 
 const createAdmin = async (payload: IAdmin): Promise<IAdmin | null> => {
   const result = await AdminModel.create(payload)

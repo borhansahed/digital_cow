@@ -4,6 +4,7 @@ import httpStatus from 'http-status'
 import { paginationHelper } from '../../../helper/pagination'
 import { filtersKey } from './cow.constraint'
 import pick from '../../../shared/pick'
+import CowModel from './cow.model'
 
 const addNewCow: RequestHandler = async (req, res, next) => {
   try {
@@ -69,6 +70,11 @@ const updateOneCow: RequestHandler = async (req, res, next) => {
     const { ...cowData } = req.body
     const { id } = req.params
 
+    const cow = await CowModel.findOne({ _id: id }, { _id: 0, seller: 1 })
+
+    if (String(cow?.seller) !== req.user.id) {
+      throw new Error('Invalid cow owner')
+    }
     const result = await CowService.updateOneCow(id, cowData)
     res.status(httpStatus.OK).json({
       success: true,

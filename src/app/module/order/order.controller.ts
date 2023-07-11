@@ -15,7 +15,7 @@ const createOrder: RequestHandler = async (req, res, next) => {
     if (cow?.label === 'sold out') {
       throw new Error('Cow already sold out')
     }
-    if (buyer && cow && buyer?.budget < cow?.price) {
+    if (buyer?.budget && cow && buyer?.budget < cow?.price) {
       throw new Error("Buyer hasn't enough money")
     }
 
@@ -38,7 +38,7 @@ const createOrder: RequestHandler = async (req, res, next) => {
 }
 const getAllOrder: RequestHandler = async (req, res, next) => {
   try {
-    const result = await OrderService.getAllOrder()
+    const result = await OrderService.getAllOrder(req.user)
     res.status(httpStatus.OK).json({
       success: true,
       message: ' Orders retrieved successfully',

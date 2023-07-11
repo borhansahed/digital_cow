@@ -5,6 +5,7 @@ import { ICow } from '../cow/cow.interface'
 import { IUser } from '../user/user.interface'
 import CowModel from '../cow/cow.model'
 import OrderModel from './order.model'
+import { JwtPayload } from 'jsonwebtoken'
 
 const createOrder = async (
   orderData: IOrder,
@@ -48,8 +49,46 @@ const createOrder = async (
   }
 }
 
-const getAllOrder = async (): Promise<IOrder[]> => {
-  const result = await OrderModel.find().populate('cow').populate('buyer')
+const getAllOrder = async (userInfo: JwtPayload): Promise<IOrder[]> => {
+  if (userInfo.role === 'seller') {
+    let result = await OrderModel.aggregate([
+      {
+        $lookup: {
+          from: 'cows',
+          localField: 'cow',
+          foreignField: '_id',
+          as: 'cow',
+        },
+      },
+      {
+        $match: {
+          'cow.seller': new mongoose.Types.ObjectId(userInfo.id),
+        },
+      },
+    ])
+
+    return (result = await OrderModel.populate(result, { path: 'buyer' }))
+  }
+
+  if (userInfo.role === 'buyer') {
+    return await OrderModel.find({
+      buyer: new Object(userInfo.id),
+    }).populate({
+      path: 'cow',
+      populate: {
+        path: 'seller',
+      },
+    })
+  }
+  const result = await OrderModel.find()
+    .populate({
+      path: 'cow',
+      populate: {
+        path: 'seller',
+      },
+    })
+    .populate('buyer')
+
   return result
 }
 

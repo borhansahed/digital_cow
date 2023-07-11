@@ -2,7 +2,7 @@ import { IUser } from './user.interface'
 import UserModel from './user.model'
 
 const createUser = async (payload: IUser): Promise<IUser | null> => {
-  const result = UserModel.create(payload)
+  const result = await UserModel.create(payload)
   return result
 }
 
@@ -33,6 +33,7 @@ const updateOneUser = async (
     Object.keys(name).forEach(key => {
       const nameKey = `name.${key}`
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(updatedUser as any)[nameKey] = name[key as keyof typeof name]
     })
   }

@@ -17,11 +17,12 @@ const authorization =
 
       req.user = verifiedToken
 
-      if (typeof role === 'string' && !(verifiedToken.role === 'admin')) {
+      if (typeof role === 'string' && !(verifiedToken.role === role)) {
         throw new Error('forbidden')
       } else if (role.length && !role.includes(verifiedToken.role)) {
         throw new Error('forbidden')
       }
+
       next()
     } catch (err) {
       next(err)

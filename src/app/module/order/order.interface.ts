@@ -4,3 +4,8 @@ export type IOrder = {
   cow: Schema.Types.ObjectId
   buyer: Schema.Types.ObjectId
 }
+
+export type IUserInfo = {
+  id: string
+  role: string
+}

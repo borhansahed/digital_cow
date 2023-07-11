@@ -1,8 +1,9 @@
 import jwt, { JwtPayload, Secret, SignOptions } from 'jsonwebtoken'
 import { IAdmin } from '../app/module/admin/admin.interface'
+import { IUser } from '../app/module/user/user.interface'
 
 const createToken = (
-  payload: Partial<IAdmin>,
+  payload: Partial<IAdmin | IUser>,
   secret: Secret,
   options: SignOptions
 ): string => {

@@ -14,6 +14,7 @@ const createAdmin: RequestHandler = async (req, res, next) => {
       ...adminData,
       phoneNumber,
     })
+
     res.status(httpStatus.OK).json({
       success: true,
       message: 'Admin created successfully',

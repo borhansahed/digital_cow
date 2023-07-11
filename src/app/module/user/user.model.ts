@@ -5,10 +5,14 @@ import config from '../../../config'
 
 const userSchema = new Schema<IUser>(
   {
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     password: {
       type: String,
       required: true,
-      select: 0,
     },
     role: {
       type: String,
@@ -24,11 +28,6 @@ const userSchema = new Schema<IUser>(
           type: String,
         },
       },
-      required: true,
-    },
-    phoneNumber: {
-      type: String,
-      unique: true,
       required: true,
     },
 

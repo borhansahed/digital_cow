@@ -3,41 +3,48 @@ import { IAdmin } from './admin.interface'
 import { BcryptHelper } from '../../../helper/bcryptHelper'
 import config from '../../../config'
 
-const adminSchema = new Schema<IAdmin>({
-  phoneNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  role: {
-    type: String,
-    enum: ['admin'],
-    required: true,
-  },
-  name: {
-    type: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
+const adminSchema = new Schema<IAdmin>(
+  {
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
     },
+    role: {
+      type: String,
+      enum: ['admin'],
+      required: true,
+    },
+    name: {
+      type: {
+        firstName: {
+          type: String,
+          required: true,
+        },
+        lastName: {
+          type: String,
+          required: true,
+        },
+      },
 
-    required: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-    select: 0,
-  },
-})
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
+)
 
 adminSchema.pre('save', async function (next) {
   this.password = await BcryptHelper.bcryptPassword(
