@@ -37,7 +37,7 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if ((cow === null || cow === void 0 ? void 0 : cow.label) === 'sold out') {
             throw new Error('Cow already sold out');
         }
-        if (buyer && cow && (buyer === null || buyer === void 0 ? void 0 : buyer.budget) < (cow === null || cow === void 0 ? void 0 : cow.price)) {
+        if ((buyer === null || buyer === void 0 ? void 0 : buyer.budget) && cow && (buyer === null || buyer === void 0 ? void 0 : buyer.budget) < (cow === null || cow === void 0 ? void 0 : cow.price)) {
             throw new Error("Buyer hasn't enough money");
         }
         if (buyer && cow && seller) {
@@ -55,7 +55,21 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 const getAllOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield order_service_1.OrderService.getAllOrder();
+        const result = yield order_service_1.OrderService.getAllOrder(req.user);
+        res.status(http_status_1.default.OK).json({
+            success: true,
+            message: ' Orders retrieved successfully',
+            data: result,
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+const getOneOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        const result = yield order_service_1.OrderService.getOneOrder(req.params.id, (_a = req.user) === null || _a === void 0 ? void 0 : _a.role, (_b = req.user) === null || _b === void 0 ? void 0 : _b.id);
         res.status(http_status_1.default.OK).json({
             success: true,
             message: ' Orders retrieved successfully',
@@ -69,4 +83,5 @@ const getAllOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 exports.OrderController = {
     createOrder,
     getAllOrder,
+    getOneOrder,
 };

@@ -28,9 +28,12 @@ const user_service_1 = require("./user.service");
 const http_status_1 = __importDefault(require("http-status"));
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userData = __rest(req.body, []);
-        const result = yield user_service_1.UserService.createUser(userData);
-        res.status(200).json({
+        const _a = req.body, { phoneNumber } = _a, userData = __rest(_a, ["phoneNumber"]);
+        if (!Number(phoneNumber)) {
+            throw new Error('invalid number');
+        }
+        const result = yield user_service_1.UserService.createUser(Object.assign(Object.assign({}, userData), { phoneNumber }));
+        res.status(http_status_1.default.OK).json({
             success: true,
             message: 'user created successfully',
             data: result,
@@ -43,7 +46,7 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield user_service_1.UserService.getAllUser();
-        res.status(200).json({
+        res.status(http_status_1.default.OK).json({
             success: true,
             message: 'Users retrieved successfully',
             data: result,
@@ -56,7 +59,7 @@ const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 const getOneUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield user_service_1.UserService.getOneUser(req.params.id);
-        res.status(200).json({
+        res.status(http_status_1.default.OK).json({
             success: true,
             message: 'User retrieved successfully',
             data: result,
@@ -69,7 +72,7 @@ const getOneUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 const deleteOneUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield user_service_1.UserService.deleteOneUser(req.params.id);
-        res.status(200).json({
+        res.status(http_status_1.default.OK).json({
             success: true,
             message: 'User Delete successfully',
             data: result,
@@ -81,15 +84,39 @@ const deleteOneUser = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 const updateOneUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const updatedData = __rest(req.body
-        // eslint-disable-next-line no-console
-        , []);
-        // eslint-disable-next-line no-console
-        console.log(updatedData);
-        const result = yield user_service_1.UserService.updateOneUser(req.params.id, updatedData);
+        const updatedData = __rest(req.body, []);
+        const result = yield user_service_1.UserService.updateOneUser(updatedData, req.params.id);
         res.status(http_status_1.default.OK).json({
             success: true,
             message: 'User Updated successfully',
+            data: result,
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+const myProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userData = req.user;
+        const result = yield user_service_1.UserService.getOneUser(userData.id);
+        res.status(http_status_1.default.OK).json({
+            success: true,
+            message: `${userData.role} data retrieved successfully`,
+            data: result,
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+const myProfileUpDate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userData = req.user;
+        const result = yield user_service_1.UserService.updateOneUser(req.body, userData.id, userData.role);
+        res.status(http_status_1.default.OK).json({
+            success: true,
+            message: `${userData.role} data updated successfully`,
             data: result,
         });
     }
@@ -103,4 +130,6 @@ exports.UserController = {
     getOneUser,
     deleteOneUser,
     updateOneUser,
+    myProfile,
+    myProfileUpDate,
 };

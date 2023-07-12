@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtHelper = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createToken = (payload, secret, options) => {
+    // console.log(secret)
     return jsonwebtoken_1.default.sign(payload, secret, options);
 };
 const verifyToken = (token, secret) => {

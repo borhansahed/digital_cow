@@ -27,6 +27,9 @@ const orderSchema = new mongoose_1.Schema({
     },
 }, {
     timestamps: true,
+    toJSON: {
+        virtuals: true,
+    },
 });
 orderSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

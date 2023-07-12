@@ -29,6 +29,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const pagination_1 = require("../../../helper/pagination");
 const cow_constraint_1 = require("./cow.constraint");
 const pick_1 = __importDefault(require("../../../shared/pick"));
+const cow_model_1 = __importDefault(require("./cow.model"));
 const addNewCow = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cowData = __rest(req.body, []);
@@ -91,6 +92,10 @@ const updateOneCow = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     try {
         const cowData = __rest(req.body, []);
         const { id } = req.params;
+        const cow = yield cow_model_1.default.findOne({ _id: id }, { _id: 0, seller: 1 });
+        if (String(cow === null || cow === void 0 ? void 0 : cow.seller) !== req.user.id) {
+            throw new Error('Invalid cow owner');
+        }
         const result = yield cow_service_1.CowService.updateOneCow(id, cowData);
         res.status(http_status_1.default.OK).json({
             success: true,

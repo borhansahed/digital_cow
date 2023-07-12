@@ -7,6 +7,7 @@ type IName = {
 
 export type IUser = {
   _id: mongoose.Types.ObjectId
+  id?: mongoose.Types.ObjectId
   password: string
   role: 'buyer' | 'seller'
   name: IName

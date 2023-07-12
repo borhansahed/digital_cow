@@ -39,11 +39,93 @@ const createOrder = (orderData, cowData, buyerData, sellerData) => __awaiter(voi
         throw err;
     }
 });
-const getAllOrder = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.default.find().populate('cow').populate('buyer');
+const getAllOrder = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    if ((userInfo === null || userInfo === void 0 ? void 0 : userInfo.role) === 'seller') {
+        let result = yield order_model_1.default.aggregate([
+            {
+                $lookup: {
+                    from: 'cows',
+                    localField: 'cow',
+                    foreignField: '_id',
+                    as: 'cow',
+                },
+            },
+            {
+                $match: {
+                    'cow.seller': new mongoose_1.default.Types.ObjectId(userInfo.id),
+                },
+            },
+        ]);
+        return (result = yield order_model_1.default.populate(result, { path: 'buyer' }));
+    }
+    let query = {};
+    if ((userInfo === null || userInfo === void 0 ? void 0 : userInfo.role) === 'buyer') {
+        query = {
+            buyer: new Object(userInfo.id),
+        };
+    }
+    const result = yield order_model_1.default.find(query)
+        .populate({
+        path: 'cow',
+        populate: {
+            path: 'seller',
+        },
+    })
+        .populate('buyer');
     return result;
+});
+const getOneOrder = (...id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (id.includes('seller')) {
+        let result = yield order_model_1.default.aggregate([
+            {
+                $match: {
+                    _id: new mongoose_1.default.Types.ObjectId(id[0]),
+                },
+            },
+            {
+                $lookup: {
+                    from: 'cows',
+                    localField: 'cow',
+                    foreignField: '_id',
+                    as: 'cow',
+                },
+            },
+            {
+                $match: {
+                    'cow.seller': new mongoose_1.default.Types.ObjectId(id[2]),
+                },
+            },
+        ]);
+        result = yield order_model_1.default.populate(result, [
+            { path: 'cow', populate: { path: 'seller' } },
+            { path: 'buyer' },
+        ]);
+        if (result.length < 1) {
+            throw new Error('you are not a owner');
+        }
+        return result;
+    }
+    const result = yield order_model_1.default.findOne({ _id: id[0] })
+        .populate({
+        path: 'cow',
+        populate: {
+            path: 'seller',
+        },
+    })
+        .populate('buyer');
+    if (id.includes('buyer') && String(result === null || result === void 0 ? void 0 : result.buyer) !== id[2]) {
+        throw new Error('You are not a real buyer');
+    }
+    return (result &&
+        (yield result.populate({
+            path: 'cow',
+            populate: {
+                path: 'seller',
+            },
+        })).populate('buyer'));
 });
 exports.OrderService = {
     createOrder,
     getAllOrder,
+    getOneOrder,
 };

@@ -24,9 +24,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+const admin_model_1 = __importDefault(require("../admin/admin.model"));
 const user_model_1 = __importDefault(require("./user.model"));
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = user_model_1.default.create(payload);
+    const result = yield user_model_1.default.create(payload);
     return result;
 });
 const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,14 +35,12 @@ const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getOneUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findById(id);
-    return result;
+    return yield user_model_1.default.findById(id);
 });
 const deleteOneUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findByIdAndDelete(id);
-    return result;
+    return yield user_model_1.default.findByIdAndDelete(id);
 });
-const updateOneUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateOneUser = (payload, ...id) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = payload, userData = __rest(payload, ["name"]);
     const updatedUser = Object.assign({}, userData);
     if (name && Object.keys(name).length > 0) {
@@ -50,8 +49,10 @@ const updateOneUser = (id, payload) => __awaiter(void 0, void 0, void 0, functio
             updatedUser[nameKey] = name[key];
         });
     }
-    const result = yield user_model_1.default.findByIdAndUpdate(id, { $set: updatedUser }, { new: true });
-    return result;
+    if (id.includes('admin')) {
+        return yield admin_model_1.default.findByIdAndUpdate(id[0], { $set: updatedUser }, { new: true });
+    }
+    return yield user_model_1.default.findByIdAndUpdate(id[0], { $set: updatedUser }, { new: true });
 });
 exports.UserService = {
     createUser,

@@ -7,13 +7,13 @@ const router = express.Router()
 
 router.get(
   '/',
-  auth.authorization([USER_ROLE.ADMIN, USER_ROLE.SELLER, USER_ROLE.BUYER]),
+  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.SELLER, USER_ROLE.BUYER),
   CowController.getAllCow
 )
 router.post('/', auth.authorization(USER_ROLE.SELLER), CowController.addNewCow)
 router.get(
   '/:id',
-  auth.authorization([USER_ROLE.ADMIN, USER_ROLE.SELLER, USER_ROLE.BUYER]),
+  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.SELLER, USER_ROLE.BUYER),
   CowController.getOneCow
 )
 router.patch(
