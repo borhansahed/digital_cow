@@ -1,12 +1,18 @@
 {
   "name": "cow-hut-admin-auth-backend-assignment",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/Programming-Hero-Web-Course4/l2a3-cow-hut-backend-assignment-borhansahed.git",
   "author": "Mohammad Borhan Uddin",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+<<<<<<< HEAD
+=======
+    "build": "tsc -p",
+>>>>>>> 0127600b5e8426487aabfe9c6a2f4925c20430ca
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
