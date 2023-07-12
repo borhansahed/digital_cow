@@ -7,7 +7,6 @@ const createToken = (
   secret: Secret,
   options: SignOptions
 ): string => {
-  // console.log(secret)
   return jwt.sign(payload, secret, options)
 }
 const verifyToken = (token: string, secret: Secret): JwtPayload => {
