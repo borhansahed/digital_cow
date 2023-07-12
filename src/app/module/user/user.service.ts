@@ -13,11 +13,8 @@ const getAllUser = async (): Promise<IUser[] | null> => {
   return result
 }
 
-const getOneUser = async (...id: string[]): Promise<IUser | null> => {
-  if (id.includes('admin')) {
-    return await AdminModel.findById(id[0])
-  }
-  return await UserModel.findById(id[0])
+const getOneUser = async (id: string): Promise<IUser | null> => {
+  return await UserModel.findById(id)
 }
 
 const deleteOneUser = async (id: string): Promise<IUser | null> => {

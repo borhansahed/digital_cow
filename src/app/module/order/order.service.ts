@@ -87,35 +87,43 @@ const getAllOrder = async (userInfo: JwtPayload): Promise<IOrder[]> => {
 
   return result
 }
-const getOneOrder = async (id: string, userInfo: JwtPayload) => {
-  // if (userInfo?.role === 'seller') {
-  //   let result = await OrderModel.aggregate([
-  //     {
-  //       $lookup: {
-  //         from: 'cows',
-  //         localField: 'cow',
-  //         foreignField: '_id',
-  //         as: 'cow',
-  //       },
-  //     },
-  //     {
-  //       $match: {
-  //         'cow.seller': new mongoose.Types.ObjectId(userInfo.id),
-  //       },
-  //     },
-  //   ])
+const getOneOrder = async (...id: string[]) => {
+  if (id.includes('seller')) {
+    let result = await OrderModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id[0]),
+        },
+      },
+      {
+        $lookup: {
+          from: 'cows',
+          localField: 'cow',
+          foreignField: '_id',
+          as: 'cow',
+        },
+      },
 
-  //   return (result = await OrderModel.populate(result, { path: 'buyer' }))
-  // }
+      {
+        $match: {
+          'cow.seller': new mongoose.Types.ObjectId(id[2]),
+        },
+      },
+    ])
 
-  // let query = {}
-  // if (userInfo?.role === 'buyer') {
-  //   query = {
-  //     buyer: new Object(userInfo.id),
-  //   }
-  // }
+    result = await OrderModel.populate(result, [
+      { path: 'cow', populate: { path: 'seller' } },
+      { path: 'buyer' },
+    ])
 
-  const result = await OrderModel.findOne({ _id: id })
+    if (result.length < 1) {
+      throw new Error('you are not a owner')
+    }
+
+    return result
+  }
+
+  const result = await OrderModel.findOne({ _id: id[0] })
     .populate({
       path: 'cow',
       populate: {
@@ -124,9 +132,21 @@ const getOneOrder = async (id: string, userInfo: JwtPayload) => {
     })
     .populate('buyer')
 
-  if (result && userInfo?.id === String(result?.buyer)) return result
+  if (id.includes('buyer') && String(result?.buyer) !== id[2]) {
+    throw new Error('You are not a real buyer')
+  }
 
-  return result?.buyer
+  return (
+    result &&
+    (
+      await result.populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+        },
+      })
+    ).populate('buyer')
+  )
 }
 
 export const OrderService = {

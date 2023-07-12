@@ -63,8 +63,39 @@ const generateWithRefreshToken: RequestHandler = async (req, res, next) => {
   }
 }
 
+const myProfile: RequestHandler = async (req, res, next) => {
+  try {
+    const adminData = req.user
+    const result = await AdminService.getOneAdmin(adminData.id)
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: `${adminData.role} data retrieved successfully`,
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+const myProfileUpDate: RequestHandler = async (req, res, next) => {
+  try {
+    const adminData = req.user
+
+    const result = await AdminService.updateOneAdmin(req.body, adminData.id)
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: `${adminData.role} data updated successfully`,
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const AdminController = {
   createAdmin,
   adminLogin,
   generateWithRefreshToken,
+  myProfile,
+  myProfileUpDate,
 }

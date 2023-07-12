@@ -16,6 +16,10 @@ router.post(
   auth.authorization(USER_ROLE.BUYER),
   OrderController.createOrder
 )
-router.get('/:id', OrderController.getOneOrder)
+router.get(
+  '/:id',
+  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.SELLER, USER_ROLE.BUYER),
+  OrderController.getOneOrder
+)
 
 export const OrderRoute = router

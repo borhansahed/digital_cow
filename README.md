@@ -1,92 +1,56 @@
 # Digital Cow Backend
 
-Digital Cow Backend: Revolutionizing Cattle Trading
+<hr>
 
-Welcome to Digital Cow Backend, where buying and selling cattle has never been easier. Create your account as a buyer or seller, and enter a world of seamless transactions and limitless opportunities.
+### Live Link: https://digital-cow.onrender.com
 
-For sellers, our platform offers a sleek interface to showcase your cows with detailed listings, captivating images, and essential information. Reach a wider audience and maximize your sales potential.
+### Application Routes:
 
-Buyers can explore a vast selection of cows based on breed, age, and location. Find your perfect match, whether for dairy production, breeding, or expanding your herd. Connect directly with sellers and negotiate terms effortlessly.
+### Auth (User)
 
-Join Digital Cow Backend today and be a part of the future of cattle trading. Unleash the power of technology in the livestock industry and embrace a world of possibilities.
+- Route: https://digital-cow.onrender.com/api/v1/auth/login (POST)
+- Route: https://digital-cow.onrender.com/api/v1/auth/signup (POST)
+- Route: https://digital-cow.onrender.com/api/v1/auth/refresh-token (POST)
 
-## Main Link
+### Auth (Admin)
 
-https://digital-cow.onrender.com
+- Route: https://digital-cow.onrender.com/api/v1/admins/create-admin (POST)
+- Route: https://digital-cow.onrender.com/api/v1/admins/login (POST)
 
-## Users
+### User
 
-#### Post User
+- Route: https://digital-cow.onrender.com/api/v1/users (GET)
+- Route: https://example.com/api/v1/users/6177a5b87d32123f08d2f5d4 (Single GET)
+- Route: https://digital-cow.onrender.com/api/v1/users/6177a5b87d32123f08d2f5d4 (PATCH)
+- Route: https://digital-cow.onrender.com/api/v1/users/6177a5b87d32123f08d2f5d4 (DELETE)
 
-```http
-  https://digital-cow.onrender.com/api/v1/auth/signup
-```
+#### Cows
 
-#### Get User
+- Route: https://digital-cow.onrender.com/api/v1/cows (GET)
+- Route: https://digital-cow.onrender.com/api/v1/cows/6177a5b87d32123f08d2f5d4 (Single GET)
+- Route: https://digital-cow.onrender.com/api/v1/cows/6177a5b87d32123f08d2f5d4 (PATCH)
+- Route: https://digital-cow.onrender.com/api/v1/cows/6177a5b87d32123f08d2f5d4 (DELETE)
+- Route: https://digital-cow.onrender.com/api/v1/cows (POST)
 
-```http
-  https://digital-cow.onrender.com/api/v1/users
-```
+#### Orders
 
-```http
-  https://digital-cow.onrender.com/api/v1/users/:id
-```
+- Route: https://digital-cow.onrender.com/api/v1/orders (POST)
+- Route: https://digital-cow.onrender.com/api/v1/orders (GET)
 
-#### Update User
+## Bonus Part
 
-```http
-  https://digital-cow.onrender.com/api/v1/users/:id
-```
+#### Admin
 
-#### Delete User
+-Route: https://digital-cow.onrender.com/api/v1/admins/create-admin (POST)
 
-```http
-  https://digital-cow.onrender.com/api/v1/users/:id
-```
+#### My Profile
 
-## Cows
+- Route: https://digital-cow.onrender.com/api/v1/users/my-profile (GET)
+- Route: https://digital-cow.onrender.com/api/v1/users/my-profile (PATCH)
 
-#### Post Cow
+#### Order:
 
-```http
-  https://digital-cow.onrender.com/api/v1/cows
-```
-
-#### Get Cow
-
-```http
-  https://digital-cow.onrender.com/api/v1/cows
-```
-
-```http
-  https://digital-cow.onrender.com/api/v1/cows/:id
-```
-
-#### Update Cow
-
-```http
-  https://digital-cow.onrender.com/api/v1/cows/:id
-```
-
-#### Delete Cow
-
-```http
-  https://digital-cow.onrender.com/api/v1/cows/:id
-```
-
-## Orders
-
-#### Post Order
-
-```http
-  https://digital-cow.onrender.com/api/v1/orders
-```
-
-#### Get Order
-
-```http
-  https://digital-cow.onrender.com/api/v1/orders
-```
+- Route: https://digital-cow.onrender.com/api/v1/orders/6177a5b87d32123f08d2f5d4 (Single GET)
 
 ## Features
 

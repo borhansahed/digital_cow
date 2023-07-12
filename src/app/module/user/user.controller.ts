@@ -76,7 +76,7 @@ const updateOneUser: RequestHandler = async (req, res, next) => {
 const myProfile: RequestHandler = async (req, res, next) => {
   try {
     const userData = req.user
-    const result = await UserService.getOneUser(userData.id, userData.role)
+    const result = await UserService.getOneUser(userData.id)
 
     res.status(httpStatus.OK).json({
       success: true,

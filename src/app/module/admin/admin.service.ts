@@ -84,10 +84,39 @@ const getAdmin = async (id: string) => {
   const result = await AdminModel.findById(id)
   return result
 }
+const getOneAdmin = async (id: string): Promise<IAdmin | null> => {
+  return await AdminModel.findById(id)
+}
+
+const updateOneAdmin = async (
+  payload: Partial<IAdmin>,
+  id: string
+): Promise<IAdmin | null> => {
+  const { name, ...adminData } = payload
+
+  const updatedAdmin = { ...adminData }
+
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(key => {
+      const nameKey = `name.${key}`
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(updatedAdmin as any)[nameKey] = name[key as keyof typeof name]
+    })
+  }
+
+  return await AdminModel.findByIdAndUpdate(
+    id,
+    { $set: updatedAdmin },
+    { new: true }
+  )
+}
 
 export const AdminService = {
   createAdmin,
   adminLogin,
   generateWithRefreshToken,
   getAdmin,
+  getOneAdmin,
+  updateOneAdmin,
 }

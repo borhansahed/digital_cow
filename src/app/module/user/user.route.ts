@@ -9,13 +9,13 @@ route.get('/', auth.authorization(USER_ROLE.ADMIN), UserController.getAllUser)
 
 route.get(
   '/my-profile',
-  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.BUYER, USER_ROLE.SELLER),
+  auth.authorization(USER_ROLE.BUYER, USER_ROLE.SELLER),
   UserController.myProfile
 )
 
 route.patch(
   '/my-profile',
-  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.BUYER, USER_ROLE.SELLER),
+  auth.authorization(USER_ROLE.BUYER, USER_ROLE.SELLER),
   UserController.myProfileUpDate
 )
 

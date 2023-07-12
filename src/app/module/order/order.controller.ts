@@ -50,7 +50,11 @@ const getAllOrder: RequestHandler = async (req, res, next) => {
 }
 const getOneOrder: RequestHandler = async (req, res, next) => {
   try {
-    const result = await OrderService.getOneOrder(req.params.id, req.user)
+    const result = await OrderService.getOneOrder(
+      req.params.id,
+      req.user?.role,
+      req.user?.id
+    )
     res.status(httpStatus.OK).json({
       success: true,
       message: ' Orders retrieved successfully',
