@@ -9,10 +9,10 @@
   },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-<<<<<<< HEAD
-=======
+
+
     "build": "tsc -p",
->>>>>>> 0127600b5e8426487aabfe9c6a2f4925c20430ca
+
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
