@@ -4,7 +4,7 @@ import config from '../../config'
 import { Secret } from 'jsonwebtoken'
 
 const authorization =
-  (role: string | string[]) =>
+  (...role: string[]) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.headers.authorization
@@ -17,9 +17,7 @@ const authorization =
 
       req.user = verifiedToken
 
-      if (typeof role === 'string' && !(verifiedToken.role === role)) {
-        throw new Error('forbidden')
-      } else if (role.length && !role.includes(verifiedToken.role)) {
+      if (role.length && !role.includes(verifiedToken.role)) {
         throw new Error('forbidden')
       }
 

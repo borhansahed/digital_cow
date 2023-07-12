@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.get(
   '/',
-  auth.authorization([USER_ROLE.ADMIN, USER_ROLE.BUYER, USER_ROLE.SELLER]),
+  auth.authorization(USER_ROLE.ADMIN, USER_ROLE.BUYER, USER_ROLE.SELLER),
   OrderController.getAllOrder
 )
 router.post(
@@ -16,5 +16,6 @@ router.post(
   auth.authorization(USER_ROLE.BUYER),
   OrderController.createOrder
 )
+router.get('/:id', OrderController.getOneOrder)
 
 export const OrderRoute = router

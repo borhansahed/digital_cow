@@ -48,8 +48,21 @@ const getAllOrder: RequestHandler = async (req, res, next) => {
     next(err)
   }
 }
+const getOneOrder: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await OrderService.getOneOrder(req.params.id, req.user)
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: ' Orders retrieved successfully',
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
 
 export const OrderController = {
   createOrder,
   getAllOrder,
+  getOneOrder,
 }

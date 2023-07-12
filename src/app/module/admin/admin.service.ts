@@ -80,8 +80,14 @@ const generateWithRefreshToken = async (
   }
 }
 
+const getAdmin = async (id: string) => {
+  const result = await AdminModel.findById(id)
+  return result
+}
+
 export const AdminService = {
   createAdmin,
   adminLogin,
   generateWithRefreshToken,
+  getAdmin,
 }

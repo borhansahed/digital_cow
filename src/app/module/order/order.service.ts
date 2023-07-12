@@ -50,7 +50,7 @@ const createOrder = async (
 }
 
 const getAllOrder = async (userInfo: JwtPayload): Promise<IOrder[]> => {
-  if (userInfo.role === 'seller') {
+  if (userInfo?.role === 'seller') {
     let result = await OrderModel.aggregate([
       {
         $lookup: {
@@ -70,17 +70,13 @@ const getAllOrder = async (userInfo: JwtPayload): Promise<IOrder[]> => {
     return (result = await OrderModel.populate(result, { path: 'buyer' }))
   }
 
-  if (userInfo.role === 'buyer') {
-    return await OrderModel.find({
+  let query = {}
+  if (userInfo?.role === 'buyer') {
+    query = {
       buyer: new Object(userInfo.id),
-    }).populate({
-      path: 'cow',
-      populate: {
-        path: 'seller',
-      },
-    })
+    }
   }
-  const result = await OrderModel.find()
+  const result = await OrderModel.find(query)
     .populate({
       path: 'cow',
       populate: {
@@ -91,8 +87,50 @@ const getAllOrder = async (userInfo: JwtPayload): Promise<IOrder[]> => {
 
   return result
 }
+const getOneOrder = async (id: string, userInfo: JwtPayload) => {
+  // if (userInfo?.role === 'seller') {
+  //   let result = await OrderModel.aggregate([
+  //     {
+  //       $lookup: {
+  //         from: 'cows',
+  //         localField: 'cow',
+  //         foreignField: '_id',
+  //         as: 'cow',
+  //       },
+  //     },
+  //     {
+  //       $match: {
+  //         'cow.seller': new mongoose.Types.ObjectId(userInfo.id),
+  //       },
+  //     },
+  //   ])
+
+  //   return (result = await OrderModel.populate(result, { path: 'buyer' }))
+  // }
+
+  // let query = {}
+  // if (userInfo?.role === 'buyer') {
+  //   query = {
+  //     buyer: new Object(userInfo.id),
+  //   }
+  // }
+
+  const result = await OrderModel.findOne({ _id: id })
+    .populate({
+      path: 'cow',
+      populate: {
+        path: 'seller',
+      },
+    })
+    .populate('buyer')
+
+  if (result && userInfo?.id === String(result?.buyer)) return result
+
+  return result?.buyer
+}
 
 export const OrderService = {
   createOrder,
   getAllOrder,
+  getOneOrder,
 }

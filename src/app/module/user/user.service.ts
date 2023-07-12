@@ -1,3 +1,5 @@
+import { IAdmin } from '../admin/admin.interface'
+import AdminModel from '../admin/admin.model'
 import { IUser } from './user.interface'
 import UserModel from './user.model'
 
@@ -11,20 +13,21 @@ const getAllUser = async (): Promise<IUser[] | null> => {
   return result
 }
 
-const getOneUser = async (id: string): Promise<IUser | null> => {
-  const result = await UserModel.findById(id)
-  return result
+const getOneUser = async (...id: string[]): Promise<IUser | null> => {
+  if (id.includes('admin')) {
+    return await AdminModel.findById(id[0])
+  }
+  return await UserModel.findById(id[0])
 }
 
 const deleteOneUser = async (id: string): Promise<IUser | null> => {
-  const result = await UserModel.findByIdAndDelete(id)
-  return result
+  return await UserModel.findByIdAndDelete(id)
 }
 
 const updateOneUser = async (
-  id: string,
-  payload: Partial<IUser>
-): Promise<IUser | null> => {
+  payload: IUser | IAdmin,
+  ...id: string[]
+): Promise<IUser | IAdmin | null> => {
   const { name, ...userData } = payload
 
   const updatedUser = { ...userData }
@@ -38,12 +41,18 @@ const updateOneUser = async (
     })
   }
 
-  const result = await UserModel.findByIdAndUpdate(
-    id,
+  if (id.includes('admin')) {
+    return await AdminModel.findByIdAndUpdate(
+      id[0],
+      { $set: updatedUser },
+      { new: true }
+    )
+  }
+  return await UserModel.findByIdAndUpdate(
+    id[0],
     { $set: updatedUser },
     { new: true }
   )
-  return result
 }
 export const UserService = {
   createUser,

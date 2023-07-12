@@ -62,12 +62,43 @@ const deleteOneUser: RequestHandler = async (req, res, next) => {
 const updateOneUser: RequestHandler = async (req, res, next) => {
   try {
     const { ...updatedData } = req.body
-    // eslint-disable-next-line no-console
-    console.log(updatedData)
-    const result = await UserService.updateOneUser(req.params.id, updatedData)
+    const result = await UserService.updateOneUser(updatedData, req.params.id)
     res.status(httpStatus.OK).json({
       success: true,
       message: 'User Updated successfully',
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+const myProfile: RequestHandler = async (req, res, next) => {
+  try {
+    const userData = req.user
+    const result = await UserService.getOneUser(userData.id, userData.role)
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: `${userData.role} data retrieved successfully`,
+      data: result,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+const myProfileUpDate: RequestHandler = async (req, res, next) => {
+  try {
+    const userData = req.user
+
+    const result = await UserService.updateOneUser(
+      req.body,
+      userData.id,
+      userData.role
+    )
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: `${userData.role} data updated successfully`,
       data: result,
     })
   } catch (err) {
@@ -81,4 +112,6 @@ export const UserController = {
   getOneUser,
   deleteOneUser,
   updateOneUser,
+  myProfile,
+  myProfileUpDate,
 }
